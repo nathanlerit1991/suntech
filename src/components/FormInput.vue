@@ -4,7 +4,7 @@
       {{label}}
       </klabel>
       <div class="k-form-field-wrap">
-        <kinput :style="{ width: '230px' }" 
+        <kinput 
           :valid="valid"
           :id="id"
           :value="value"

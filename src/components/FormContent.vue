@@ -27,7 +27,7 @@
           />
           <!-- KENDO UI FOR EMAIL -->
           <field
-            v-if="isAbove18"
+            v-if="validAge"
             :name="'email'"
             :type="'email'"
             :component="'emailField'"
@@ -54,7 +54,7 @@
 
       <div class="k-form-buttons">
         <kbutton 
-          :disabled="isAbove18 ? undefined : true " :class="isAbove18 ? 'k-button-primary' : 'k-button-secondary'"
+          :disabled="validAge ? undefined : true " :class="validAge ? 'k-button-primary' : 'k-button-secondary'"
           type="submit"
         >Next
         </kbutton>
@@ -71,7 +71,7 @@ import { defineComponent } from 'vue'
 
 import { Input } from '@progress/kendo-vue-inputs'
 import { Button } from '@progress/kendo-vue-buttons'
-import { Error, Hint, Label } from "@progress/kendo-vue-labels"
+import { Label } from "@progress/kendo-vue-labels"
 
 import { FieldWrapper } from "@progress/kendo-vue-form";
 import { Field, FormElement } from "@progress/kendo-vue-form"
@@ -104,7 +104,7 @@ export default defineComponent({
       emailValidatorData: emailValidator,
       renderers: Object.freeze(renderers),
 
-      isAbove18: false,
+      validAge: false,
       data: {
         date: '2023-07-08',
       },
@@ -141,9 +141,9 @@ export default defineComponent({
 
       if (ageDiff >= 18) {
         this.data.date = event.data.date
-        this.isAbove18 = true
+        this.validAge = true
       } else {
-        this.isAbove18 = false
+        this.validAge = false
       }
     },
     handleSubmit (dataItem) {
