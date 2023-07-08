@@ -1,0 +1,3 @@
+After following the documentation
+- Got this error -> ✘ [ERROR] Could not resolve "@progress/kendo-vue-treeview"
+  solution -> npm install @progress/kendo-vue-treeview
