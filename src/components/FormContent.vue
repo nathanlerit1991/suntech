@@ -3,31 +3,26 @@
     <form-element>
       <fieldset class="k-form-fieldset">
         <div class="mb-3">
-          <fieldwrapper>
-            <klabel>
+          <k-fieldwrapper>
+            <k-label>
               First Name
-            </klabel>
-            <Input />
-          </fieldwrapper>
+            </k-label>
+            <k-input />
+          </k-fieldwrapper>
 
-          <fieldwrapper>
-            <klabel>
+          <k-fieldwrapper>
+            <k-label>
               Last Name
-            </klabel>
-            <Input />
-          </fieldwrapper>
+            </k-label>
+            <k-input />
+          </k-fieldwrapper>
 
           <!-- JSONFORM FOR AGE -->
-          <json-forms
-            :data="data"
-            :schema="schema"
-            :uischema="uischema"
-            :renderers="renderers"
-            @change="validateAge"
-          />
+          <date-picker @update-age="updateAgeFn" />
+
           <!-- KENDO UI FOR EMAIL -->
-          <field
-            v-if="validAge"
+          <k-field
+            v-if="isAgeValid"
             :name="'email'"
             :type="'email'"
             :component="'emailField'"
@@ -39,26 +34,26 @@
                 This 'props' gets all data in <field> which is the 'emailField'
                 Then pass all the values in <forminput> component using props
               -->
-              <forminput
+              <email-input
                 v-bind="props"
                 @change="props.onChange"
                 @blur="props.onBlur"
                 @focus="props.onFocus"
               />
             </template>
-          </field>
+          </k-field>
         </div>
 
       </fieldset>
 
 
       <div class="k-form-buttons">
-        <kbutton 
-          :theme-color="validAge ? 'primary' : 'secondary'"
-          :disabled="validAge ? undefined : true "
+        <k-button 
+          :theme-color="isAgeValid ? 'primary' : 'secondary'"
+          :disabled="isAgeValid ? undefined : true "
           type="submit"
         >Next
-        </kbutton>
+        </k-button>
       </div>
     </form-element>
 
@@ -66,93 +61,44 @@
   </div>
 </template>
 <script>
-import { JsonForms } from '@jsonforms/vue'
-import { vanillaRenderers } from '@jsonforms/vue-vanilla'
 import { defineComponent } from 'vue'
 
 import { Input } from '@progress/kendo-vue-inputs'
 import { Button } from '@progress/kendo-vue-buttons'
 import { Label } from "@progress/kendo-vue-labels"
+import { FieldWrapper, Field, FormElement } from "@progress/kendo-vue-form"
 
-import { FieldWrapper } from "@progress/kendo-vue-form";
-import { Field, FormElement } from "@progress/kendo-vue-form"
-import FormInput from "./FormInput.vue"
+import DatePicker from "./DatePicker.vue"
+import EmailInput from "./EmailInput.vue"
 
 //REGEX FOR EMAIL VALIDATION AND ERROR MESSAGE
 const emailRegex = new RegExp(/\S+@\S+\.\S+/)
 const emailValidator = (value) => emailRegex.test(value) ? "" : "Please enter a valid email."
 
-const renderers = [
-  ...vanillaRenderers,
-]
-
 export default defineComponent({
   components: {
-    JsonForms,
-    Input,
-    'kbutton': Button,
-    klabel: Label,
-    fieldwrapper: FieldWrapper,
+    'k-input': Input,
+    'k-button': Button,
+    'k-label': Label,
+    'k-fieldwrapper': FieldWrapper,
+    'k-field': Field,
 
-
-    field: Field,
     'form-element': FormElement,
-    'forminput': FormInput,
+    'email-input': EmailInput,
+    'date-picker': DatePicker
   },
   data() {
     return {
       //Whatever the return data in 'emailValidator' will store in 'emailValidatorData'
       emailValidatorData: emailValidator,
-      renderers: Object.freeze(renderers),
-
-      validAge: false,
-      data: {
-        date: '',
-      },
-      schema: {
-        properties: {
-          date: {
-            type: 'string',
-          },
-        },
-      },
-      uischema: {
-        type: 'Control',
-        elements: [
-          {
-            type: 'Control',
-            scope: '#/properties/date',
-            label: 'Birthday',
-            options: {
-              format: 'date',
-              dateFormat: 'YYYY.MM',
-              dateSaveFormat: 'YYYY-MM'
-            },
-          },
-        ],
-      },
-    };
-  },
-  methods: {
-    validateAge(event) {
-      let currentDate = new Date()
-      currentDate = currentDate.toISOString().split('T')[0]
-      let inputDate = event.data.date
-      const ageDiff = currentDate.split('-')[0] - inputDate.split('-')[0]
-
-      if (ageDiff >= 18 && event.data.date !== '') {
-        this.data.date = event.data.date
-        this.validAge = true
-      } else {
-        this.validAge = false
-      }
-    },
-    handleSubmit (dataItem) {
-      alert(JSON.stringify(dataItem, null, 2))
-    },
-    clear(){
-      this.kendoForm.onFormReset()
+      isAgeValid: '',
     }
   },
+  methods: {
+    //Data from child component push to 'isAgeValid'
+    updateAgeFn(data){
+      this.isAgeValid = data
+    }
+  }
 });
 </script>
