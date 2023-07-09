@@ -54,7 +54,8 @@
 
       <div class="k-form-buttons">
         <kbutton 
-          :disabled="validAge ? undefined : true " :class="validAge ? 'k-button-primary' : 'k-button-secondary'"
+          :theme-color="validAge ? 'primary' : 'secondary'"
+          :disabled="validAge ? undefined : true "
           type="submit"
         >Next
         </kbutton>
@@ -106,7 +107,7 @@ export default defineComponent({
 
       validAge: false,
       data: {
-        date: '2023-07-08',
+        date: '',
       },
       schema: {
         properties: {
@@ -139,7 +140,7 @@ export default defineComponent({
       let inputDate = event.data.date
       const ageDiff = currentDate.split('-')[0] - inputDate.split('-')[0]
 
-      if (ageDiff >= 18) {
+      if (ageDiff >= 18 && event.data.date !== '') {
         this.data.date = event.data.date
         this.validAge = true
       } else {
