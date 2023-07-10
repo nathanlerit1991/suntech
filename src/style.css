@@ -15,14 +15,46 @@ h2 {
   box-sizing: border-box;
 }
 
-#form-wrapper > div{
-  width: 100%;
-  max-width: 600px;
+#form-wrapper > form{
+  width: 400px;
   background: rgba(255,255,255, .3);
   padding: 40px;
   border-radius: 8px;
 }
 
 #form-wrapper label {
+  color: #fff;
+}
+
+#welcome {
+  display: flex;
+  align-items: center;
+}
+#welcome .title {
+  text-align: right;
+  border-right: solid 1px #fff;
+}
+#welcome h1 {
+  font-size: 35px;
+  color: #fff;
+  font-family: tahoma;
+  font-weight: 400;
+  margin: 0;
+}
+#welcome p,
+#welcome small {
+  color: #fff;
+}
+#welcome p {
+  font-size: 22px;
+}
+#welcome small {
+  letter-spacing: 2px;
+}
+#welcome > * {
+  padding: 10px 20px;
+}
+
+.k-form-error {
   color: #fff;
 }

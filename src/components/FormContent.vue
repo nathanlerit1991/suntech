@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div id="form-wrapper" v-if="!isWelcome">
+    <h2>Vite, Vue3 and Typescript</h2>
     <form-element>
       <fieldset class="k-form-fieldset">
         <div class="mb-3">
@@ -7,14 +8,14 @@
             <k-label>
               First Name
             </k-label>
-            <k-input />
+            <k-input v-model="first_name" />
           </k-fieldwrapper>
 
           <k-fieldwrapper>
             <k-label>
               Last Name
             </k-label>
-            <k-input />
+            <k-input v-model="last_name" />
           </k-fieldwrapper>
 
           <!-- JSONFORM FOR AGE -->
@@ -51,14 +52,17 @@
         <k-button 
           :theme-color="isAgeValid ? 'primary' : 'secondary'"
           :disabled="isAgeValid ? undefined : true "
-          type="submit"
+          @click="isWelcome = true"
         >Next
         </k-button>
       </div>
     </form-element>
-
-
   </div>
+  <welcome
+    v-if="isWelcome"
+    :props_first_name = first_name
+    :props_last_name  = last_name
+  />
 </template>
 <script>
 import { defineComponent } from 'vue'
@@ -70,6 +74,7 @@ import { FieldWrapper, Field, FormElement } from "@progress/kendo-vue-form"
 
 import DatePicker from "./DatePicker.vue"
 import EmailInput from "./EmailInput.vue"
+import Welcome from "./Welcome.vue"
 
 //REGEX FOR EMAIL VALIDATION AND ERROR MESSAGE
 const emailRegex = new RegExp(/\S+@\S+\.\S+/)
@@ -85,13 +90,17 @@ export default defineComponent({
 
     'form-element': FormElement,
     'email-input': EmailInput,
-    'date-picker': DatePicker
+    'date-picker': DatePicker,
+    'welcome': Welcome
   },
   data() {
     return {
       //Whatever the return data in 'emailValidator' will store in 'emailValidatorData'
       emailValidatorData: emailValidator,
+      first_name: '',
+      last_name: '',
       isAgeValid: '',
+      isWelcome: false,
     }
   },
   methods: {

@@ -13,6 +13,7 @@
           @input="handleChange"
           @blur="handleBlur"
           @focus="handleFocus"
+          required
           />
         <error v-if="showValidationMessage">
             {{validationMessage}}
