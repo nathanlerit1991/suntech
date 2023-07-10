@@ -55,6 +55,6 @@ h2 {
   padding: 10px 20px;
 }
 
-.k-form-error {
+.k-form-field .k-form-error {
   color: #fff;
 }
